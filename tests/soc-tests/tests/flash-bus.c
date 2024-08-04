@@ -1,11 +1,9 @@
 #include <am.h>
-#include <klib-macros.h>
-#include <klib.h>
 #include <stdint.h>
 
 #define TEST_SIZE 512
 
-__attribute__((noinline)) void check(bool cond) {
+__attribute__((noinline)) static void check(bool cond) {
   if (!cond) {
     halt(1);
   }
