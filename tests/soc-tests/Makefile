@@ -17,9 +17,9 @@ $(ALL): %: %.mk
 %.mk: tests/% latest
 	@/bin/echo -e "NAME = $*\nSRCS = $<\ninclude $(AM_HOME)/Makefile" > $@
 	@if make -s -f $@ ARCH=$(ARCH) $(MAKECMDGOALS); then \
-		printf "[%14s] $(COLOR_GREEN)PASS$(COLOR_NONE)\n" $* >> $(RESULT); \
+		printf "[%20s] $(COLOR_GREEN)PASS$(COLOR_NONE)\n" $* >> $(RESULT); \
 	else \
-		printf "[%14s] $(COLOR_RED)***FAIL***$(COLOR_NONE)\n" $* >> $(RESULT); \
+		printf "[%20s] $(COLOR_RED)***FAIL***$(COLOR_NONE)\n" $* >> $(RESULT); \
 	fi
 	-@rm -f $*.mk
 	

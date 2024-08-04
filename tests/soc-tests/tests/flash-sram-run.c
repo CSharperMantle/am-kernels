@@ -33,6 +33,9 @@ typedef union SpiMasCtrl {
   uint32_t as_u32;
 } SpiMasCtrl_t;
 
+#define SRAM_BASE 0x0f000000
+#define SRAM_SIZE 0x2000
+
 #define inb(addr) (*(volatile uint8_t *)(addr))
 #define inw(addr) (*(volatile uint16_t *)(addr))
 #define inl(addr) (*(volatile uint32_t *)(addr))
@@ -48,12 +51,6 @@ typedef union SpiMasCtrl {
   do {                                                                                             \
     *(volatile uint32_t *)(addr) = (data);                                                         \
   } while (0)
-
-__attribute__((noinline)) static void check(bool cond) {
-  if (!cond) {
-    halt(1);
-  }
-}
 
 __attribute__((noinline)) static void spi_init(void) {
   outl(PERIP_SPI_MAS_ADDR + SPI_MAS_REG_DIV, 0);
@@ -100,10 +97,12 @@ __attribute__((noinline)) static uint32_t flash_read(uint32_t addr) {
 
 int main(void) {
   spi_init();
-  for (size_t i = 0; i < 128; i++) {
-    const uint32_t w = flash_read(i);
-    const uint8_t b = (w & (0xff << ((i % 4) * 8))) >> ((i % 4) * 8);
-    check(b == (i & 0xff));
+  const uint32_t len = flash_read(0);
+  for (size_t i = 0; i < len / sizeof(uint32_t) + 1; i++) {
+    const uint32_t w = flash_read((i + 1) * sizeof(uint32_t));
+    outl(SRAM_BASE + i * sizeof(uint32_t), w);
   }
+  ((void (*)(void))SRAM_BASE)();
+  halt(1);
   return 0;
 }
