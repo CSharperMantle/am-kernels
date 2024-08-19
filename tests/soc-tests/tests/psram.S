@@ -2,8 +2,8 @@
 #error This test only works on ysyxSoC.
 #endif
 
-#define SRAM_BASE 0x0f000000
-#define SRAM_SIZE 0x2000
+#define SRAM_BASE 0x80000000
+#define SRAM_SIZE 0x1000
 
 
 /* void _start(void)
