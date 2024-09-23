@@ -2,8 +2,8 @@
 #error This test only works on ysyxSoC.
 #endif
 
-#define SRAM_BASE 0x80000000
-#define SRAM_SIZE 0x1000
+#define AREA_BASE 0x80000000
+#define AREA_SIZE 0x400000
 
 
 /* void _start(void)
@@ -19,7 +19,7 @@
 .globl _start
 .type _start, @function
 _start:
-    li a3, SRAM_BASE
+    li a3, AREA_BASE
 
     mv a4, zero
 l_check_next_round:
@@ -58,7 +58,7 @@ l_check_cmp:
     jal assert
 
     add a2, a2, a5
-    li t0, SRAM_SIZE
+    li t0, AREA_SIZE
     bltu a2, t0, l_check_loop
 
     addi a4, a4, 1
