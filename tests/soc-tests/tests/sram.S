@@ -2,8 +2,15 @@
 #error This test only works on ysyxSoC.
 #endif
 
-#define SRAM_BASE 0x0f000000
-#define SRAM_SIZE 0x2000
+#define AREA_BASE 0x0f000000
+#define AREA_SIZE 0x2000
+#define TEST_SIZE 0x100
+#if (TEST_SIZE > AREA_SIZE)
+#error TEST_SIZE must be less than or equal to AREA_SIZE.
+#endif
+#if (TEST_SIZE % 4 != 0)
+#error TEST_SIZE must be a multiple of 4.
+#endif
 
 
 /* void _start(void)
@@ -19,7 +26,7 @@
 .globl _start
 .type _start, @function
 _start:
-    li a3, SRAM_BASE
+    li a3, AREA_BASE
 
     mv a4, zero
 l_check_next_round:
@@ -58,7 +65,7 @@ l_check_cmp:
     jal assert
 
     add a2, a2, a5
-    li t0, SRAM_SIZE
+    li t0, TEST_SIZE
     bltu a2, t0, l_check_loop
 
     addi a4, a4, 1

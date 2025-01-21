@@ -2,8 +2,8 @@
 #error This test only works on ysyxSoC.
 #endif
 
-#define AREA_BASE 0x80000000
-#define AREA_SIZE 0x400000
+#define AREA_BASE 0xa0000000
+#define AREA_SIZE 0x100000
 #define TEST_SIZE 0x1000
 #if (TEST_SIZE > AREA_SIZE)
 #error TEST_SIZE must be less than or equal to AREA_SIZE.
