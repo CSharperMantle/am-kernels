@@ -30,6 +30,8 @@ run: all
 
 gdb: all
 
+pwndbg: all
+
 clean:
 	rm -rf Makefile.* build/
 
